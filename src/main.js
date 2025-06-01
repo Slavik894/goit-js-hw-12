@@ -6,7 +6,7 @@ import "izitoast/dist/css/iziToast.min.css";
 
 const form = document.querySelector('.form');
 
-form.addEventListener('submit', event => {
+form.addEventListener('submit', async event => {
   event.preventDefault();
   const query = form.elements['search-text'].value.trim();
   if (!query) return;
@@ -14,8 +14,8 @@ form.addEventListener('submit', event => {
   clearGallery();
   showLoader();
 
-  getImagesByQuery(query)
-    .then(response => {
+    try{
+      const response = await getImagesByQuery(query)
       const images = response.data.hits;
       if (images.length > 0) {
         createGallery(images);
@@ -26,11 +26,13 @@ form.addEventListener('submit', event => {
         class: 'custom-toast',
       })
       }
-    })
-    .catch(error => iziToast.show({message: error,  class: 'custom-toast'}))
-    .finally(()=>{
+    }
+    catch(error){
+      iziToast.show({message: error,  class: 'custom-toast'});
+    }  
+    finally{
       hideLoader();
-    });
+    };
    form.elements['search-text'].value = '';
     
   
