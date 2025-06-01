@@ -1,0 +1,10 @@
+.custom-toast.iziToast{
+    background-color: #c1121f;
+    border-radius: 10px;
+}
+
+.custom-toast.iziToast .iziToast-message {
+  color: #fdf0d5 !important;
+}
+
+
