@@ -77,6 +77,17 @@ load_more_btn.addEventListener('click', async ()=>{
 
     if(images.length>0){
       createGallery(images);
+
+      setTimeout(() => {
+        const firstCard = document.querySelector(".gallery-element");
+        if (firstCard) {
+          const cardHeight = firstCard.getBoundingClientRect().height;
+          window.scrollBy({
+            top: cardHeight * 2,
+            behavior: 'smooth'
+          });
+        }
+      }, 0);
     }
     if(currentPage< totalPages){
       load_more_btn.classList.add('is-active');
