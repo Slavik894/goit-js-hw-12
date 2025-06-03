@@ -29,15 +29,16 @@ form.addEventListener('submit', async event => {
       if (images.length > 0) {
         createGallery(images);
 
+        setTimeout(() => {
         const firstCard = document.querySelector(".gallery-element");
-        if(firstCard){
+        if (firstCard) {
           const cardHeight = firstCard.getBoundingClientRect().height;
-          
           window.scrollBy({
             top: cardHeight * 2,
-            
+            behavior: 'smooth'
           });
         }
+      }, 0);
 
 
         totalPages = Math.ceil(totalHits / per_page);
