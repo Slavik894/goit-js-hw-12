@@ -29,6 +29,17 @@ form.addEventListener('submit', async event => {
       if (images.length > 0) {
         createGallery(images);
 
+        const firstCard = document.querySelector(".gallery-element");
+        if(firstCard){
+          const cardHeight = firstCard.getBoundingClientRect().height;
+          
+          window.scrollBy({
+            top: cardHeight * 2,
+            
+          });
+        }
+
+
         totalPages = Math.ceil(totalHits / per_page);
         if(currentPage<totalPages){
           load_more_btn.classList.add('is-active');

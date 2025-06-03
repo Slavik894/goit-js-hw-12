@@ -3,8 +3,8 @@ import SimpleLightbox from "simplelightbox";
 // Додатковий імпорт стилів
 import "simplelightbox/dist/simple-lightbox.min.css";
 
-
 const gallery = document.querySelector(".gallery");
+
 const loader = document.querySelector(".loader");
 
 
