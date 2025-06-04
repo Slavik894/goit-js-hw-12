@@ -21,5 +21,8 @@ export async function getImagesByQuery(query, page){
 
         }
     });
-    return response;
+    return{
+        images: response.data.hits,
+        totalHits: response.data.totalHits
+    };
 };

@@ -1,23 +1,23 @@
 import { getImagesByQuery, per_page } from './js/pixabay-api.js';
-import {clearGallery, createGallery, showLoader, hideLoader} from './js/render-functions.js';
+import {clearGallery, createGallery, showLoader, hideLoader, showBtn, hideBtn, load_more_btn} from './js/render-functions.js';
 
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 
 const form = document.querySelector('.form');
-const load_more_btn = document.querySelector(".load-more-btn");
+
 
 let userValue;
 let currentPage = 1;
 let totalPages = 0;
 
-load_more_btn.classList.remove('is-active');
+hideBtn();
 
 form.addEventListener('submit', async event => {
   event.preventDefault();
    userValue = form.elements['search-text'].value.trim();
   if (!userValue) { 
-    load_more_btn.classList.remove('is-active');
+    hideBtn();
     return;
   }
 
@@ -28,8 +28,8 @@ form.addEventListener('submit', async event => {
 
     try{
       const response = await getImagesByQuery(userValue, currentPage)
-      const images = response.data.hits;
-      const totalHits = response.data.totalHits;
+      const images = response.images;
+      const totalHits = response.totalHits;
       if (images.length > 0) {
         createGallery(images);
 
@@ -47,10 +47,10 @@ form.addEventListener('submit', async event => {
 
         totalPages = Math.ceil(totalHits / per_page);
         if(currentPage<totalPages){
-          load_more_btn.classList.add('is-active');
+          showBtn();
         }
         else{
-          load_more_btn.classList.remove('is-active');
+          hideBtn();
         }
  
       }
@@ -59,7 +59,7 @@ form.addEventListener('submit', async event => {
         message: "Sorry, there are no images matching your search query. Please try again!",
         class: 'custom-toast',
       });
-      load_more_btn.classList.remove('is-active');
+      hideBtn();
       }
     }
     catch(error){
@@ -67,7 +67,7 @@ form.addEventListener('submit', async event => {
         message: error,  
         class: 'custom-toast'
       });
-      load_more_btn.classList.remove('is-active');
+      hideBtn();
     }  
     finally{
       hideLoader();
@@ -81,7 +81,7 @@ load_more_btn.addEventListener('click', async ()=>{
   try{
     currentPage++;
     const response = await getImagesByQuery(userValue, currentPage);
-    const images = response.data.hits;
+    const images = response.images;
 
     if(images.length>0){
       createGallery(images);
@@ -98,22 +98,23 @@ load_more_btn.addEventListener('click', async ()=>{
       }, 0);
     }
     if(currentPage< totalPages){
-      load_more_btn.classList.add('is-active');
+      showBtn();
     }
     else{
       iziToast.show({
       message: "We're sorry, but you've reached the end of search results.",
       class: 'custom-toast'
     });
-      load_more_btn.classList.remove('is-active');
+      hideBtn();
     }
   }
   catch(error){
+    // console.log(error);
     iziToast.show({
-      message: "We're sorry, but you've reached the end of search results.",
+      message: error,
       class: 'custom-toast'
     });
-    load_more_btn.classList.remove('is-active');
+    hideBtn();
   }
   finally{
     hideLoader();
