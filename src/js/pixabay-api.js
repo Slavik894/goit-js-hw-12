@@ -2,7 +2,6 @@ import axios from 'axios';
 
 const api_key = "50385354-3e4bea1f358fcf603a5420cc4";
 const baseURL = "https://pixabay.com/api/";
-let page = 1;
 export const per_page = 15;
 
 
@@ -10,7 +9,7 @@ export const per_page = 15;
 axios.defaults.baseURL= baseURL;
 
 export async function getImagesByQuery(query, page){
-    const response = axios.get(`${baseURL}`, {
+    const response = await axios.get(`${baseURL}`, {
         params:{
             key: api_key,
             q: query,
